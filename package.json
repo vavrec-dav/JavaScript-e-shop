@@ -11,7 +11,7 @@
     "typescript": "^5.8.3"
   },
   "scripts": {
-    "dev:user": "ts-node-dev services/user-service/src/index.ts",
+    "dev:user": "npx ts-node-dev --project services/user-service/tsconfig.json services/user-service/src/server.ts",
     "dev:order": "ts-node-dev services/order-service/src/index.ts",
     "dev:connector": "ts-node-dev services/connector-mock-service/src/index.ts",
     "dev:frontend": "vite --config frontend/vite.config.ts"
