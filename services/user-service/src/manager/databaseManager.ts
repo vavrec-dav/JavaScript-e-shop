@@ -1,6 +1,7 @@
+
 import { Pool } from 'pg';
 
-const databasePool = new Pool({
+export const databasePool = new Pool({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
@@ -11,4 +12,18 @@ const databasePool = new Pool({
 databasePool.on('connect', () => console.log('DB pool connected'));
 databasePool.on('error', (err) => console.error('DB Pool error:', err));
 
-export default databasePool;
+export async function testDBConnection() {
+  try {
+    const client = await databasePool.connect();
+    client.release();
+  } catch (error) {
+    throw new Error('Failed to connect to the database');
+  }
+}
+
+export async function closeDb() {
+    await databasePool.end();
+    console.log('PostgreSQL pool closed');
+}
+
+

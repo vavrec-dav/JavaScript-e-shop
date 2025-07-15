@@ -1,6 +1,6 @@
 import app from './app'
 import './configurations/envVariables';
-import { testDBConnection, closeDb } from './database/connection';
+import { testDBConnection, closeDb } from './manager/databaseManager';
 
 import http from 'http';
 
