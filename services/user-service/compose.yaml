@@ -1,8 +1,8 @@
 version: '3.9'
 
 services:
-  postgress:
-    image: postgres
+  postgres:
+    image: postgres:17-alpine
     container_name: user-service-postgres
     ports:
       - "5432:5432"
@@ -11,14 +11,28 @@ services:
     networks:
       - user-service-network
     environment:
-      POSTGRES_USER: user_service
-      POSTGRES_PASSWORD: admin  
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+ # Database migration service
+  flyway-users:
+    image: flyway/flyway
+    command: migrate
+    volumes:
+      - ./migration/sql:/flyway/sql
+      - ./migration/flyway.conf:/flyway/conf/flyway.conf
+    environment:
+      - FLYWAY_USER=postgres
+      - FLYWAY_PASSWORD=postgres
+      - FLYWAY_URL=jdbc:postgresql://postgres:5432/postgres
+    networks:
+      - user-service-network
+    depends_on:
+      - postgres
 
 volumes:
-      postgres_data:
-        driver: local
+  postgres_data:
+    driver: local
 
 networks:
   user-service-network:
     driver: bridge
-    
