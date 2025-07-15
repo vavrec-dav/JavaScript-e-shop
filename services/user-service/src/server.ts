@@ -1,8 +1,34 @@
 import app from './app'
-import './configurations/config';
+import './configurations/envVariables';
+import { testDBConnection, closeDb } from './database/connection';
+
+import http from 'http';
 
 const PORT = process.env.PORT || 3000;
+let server: http.Server;
 
-app.listen(PORT, () => {
-  console.log(`🚀 User service server is running http://localhost:${PORT}`);
-});
+async function startServer() {
+  await testDBConnection();
+  server = app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
+
+async function gracefulShutdown() {
+  console.log('Shutting down gracefully...');
+  await closeDb();
+  if (server) {
+    server.close(() => {
+      console.log('HTTP server closed');
+    });
+  } else {
+    console.log('No HTTP server to close');
+  }
+}
+
+
+process.on('SIGINT', gracefulShutdown);
+process.on('SIGTERM', gracefulShutdown);
+
+
+startServer();
