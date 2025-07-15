@@ -1,20 +1,17 @@
 import app from './app'
-import './configurations/config';
-import { closeDb, databasePool } from './configurations/database'
+import './configurations/envVariables';
+import { testDBConnection, closeDb } from './database/connection';
+
 import http from 'http';
 
 const PORT = process.env.PORT || 3000;
 let server: http.Server;
 
-async function testDBConnection() {
-  try {
-    const client = await databasePool.connect();
-    console.log('Connected to the database successfully');
-    client.release();
-  } catch (error) {
-    console.error('Database connection error:', error);
-    throw new Error('Failed to connect to the database');
-  }
+async function startServer() {
+  await testDBConnection();
+  server = app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
 }
 
 async function gracefulShutdown() {
@@ -27,15 +24,8 @@ async function gracefulShutdown() {
   } else {
     console.log('No HTTP server to close');
   }
-
-
 }
-async function startServer() {
-  await testDBConnection();
-  server = app.listen(PORT, () => {
-    console.log(`🚀 Server is running on port ${PORT}`);
-  });
-}
+
 
 process.on('SIGINT', gracefulShutdown);
 process.on('SIGTERM', gracefulShutdown);

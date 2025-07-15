@@ -1,7 +1,7 @@
 import swaggerJSDoc, { Options } from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import path from 'path';
-import './config';
+import './envVariables';
 
 const options: Options = {
   definition: {
