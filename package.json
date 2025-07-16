@@ -15,5 +15,8 @@
     "dev:order": "ts-node-dev services/order-service/src/index.ts",
     "dev:connector": "ts-node-dev services/connector-mock-service/src/index.ts",
     "dev:frontend": "vite --config frontend/vite.config.ts"
+  },
+  "dependencies": {
+    "uuid": "^11.1.0"
   }
 }

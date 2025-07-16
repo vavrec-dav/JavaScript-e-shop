@@ -9,9 +9,6 @@ export const databasePool = new Pool({
     port: parseInt(process.env.DB_PORT || '5432', 10)
 });
 
-databasePool.on('connect', () => console.log('DB pool connected'));
-databasePool.on('error', (err) => console.error('DB Pool error:', err));
-
 export async function testDBConnection() {
   try {
     const client = await databasePool.connect();
