@@ -1,0 +1,7 @@
+# this values are used for local development!!!
+postgres:
+  host: localhost
+  port: 5432
+  database: postgres
+  user: postgres
+  password: postgres 

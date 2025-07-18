@@ -1,0 +1,11 @@
+image:
+  repository: user-service-shop
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  port: 3000
+  nodePort: 30001
+
+replicaCount: 1
